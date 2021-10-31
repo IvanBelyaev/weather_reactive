@@ -31,4 +31,19 @@ public class WeatherController {
     public Mono<Weather> get(@PathVariable Integer id) {
         return weathers.findById(id);
     }
+
+    @GetMapping("/hottest")
+    public Mono<Weather> hottest() {
+        return weathers.all().reduce(
+                (weather1, weather2) ->
+                        weather1.getTemperature() > weather2.getTemperature() ? weather1 : weather2
+        );
+    }
+
+    @GetMapping(value = "/cityGreatThan/{temperature}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Weather> temperatureGreaterThan(@PathVariable int temperature) {
+        return weathers.all()
+                .filter(weather -> weather.getTemperature() > temperature)
+                .delayElements(Duration.ofSeconds(3));
+    }
 }
