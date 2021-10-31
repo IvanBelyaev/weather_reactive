@@ -1,3 +1,5 @@
+[![Build Status](https://app.travis-ci.com/IvanBelyaev/weather_reactive.svg?branch=main)](https://app.travis-ci.com/IvanBelyaev/weather_reactive)
+
 # weather_reactive
 
 Приложение - прогноз погоды.
