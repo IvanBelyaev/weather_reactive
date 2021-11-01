@@ -4,7 +4,9 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Comparator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
@@ -14,7 +16,7 @@ public class WeatherService {
     {
         weathers.put(1, new Weather(1, "Msc", 20));
         weathers.put(2, new Weather(2, "SPb", 21));
-        weathers.put(3, new Weather(3, "Bryansk", 25));
+        weathers.put(3, new Weather(3, "Bryansk", 28));
         weathers.put(4, new Weather(4, "Smolensk", 28));
         weathers.put(5, new Weather(5, "Kiev", 27));
         weathers.put(6, new Weather(6, "Minsk", 23));
@@ -26,5 +28,12 @@ public class WeatherService {
 
     public Flux<Weather> all() {
         return Flux.fromIterable(weathers.values());
+    }
+
+    public Mono<Weather> findHottestCity() {
+        return Mono.justOrEmpty(
+                weathers.values().stream()
+                        .max(Comparator.comparingInt(Weather::getTemperature))
+        );
     }
 }

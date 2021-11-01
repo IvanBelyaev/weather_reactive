@@ -32,12 +32,9 @@ public class WeatherController {
         return weathers.findById(id);
     }
 
-    @GetMapping("/hottest")
+    @GetMapping(value = "/hottest", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Mono<Weather> hottest() {
-        return weathers.all().reduce(
-                (weather1, weather2) ->
-                        weather1.getTemperature() > weather2.getTemperature() ? weather1 : weather2
-        );
+        return weathers.findHottestCity();
     }
 
     @GetMapping(value = "/cityGreatThan/{temperature}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
